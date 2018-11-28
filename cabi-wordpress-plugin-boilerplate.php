@@ -13,8 +13,14 @@ class CabiPlugin {
     
     function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'init'));
-        add_shortcode('cabi_plugin', array($this, 'render'));   
+        add_shortcode('cabi_plugin', array($this, 'render'));
+        register_activation_hook(__FILE__, array($this, 'activation'));
+        register_deactivation_hook( __FILE__, array($this, 'deactivation'));   
     }
+
+    function activation(){}
+
+    function deactivation(){}
 
     function init() {
         wp_enqueue_style( 'cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' , array(), '1');
