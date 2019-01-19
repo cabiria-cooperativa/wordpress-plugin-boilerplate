@@ -10,13 +10,23 @@
  */
 
 class CabiPlugin {
+
+    const SLUG = 'cabi-custom-post';
     
     function __construct() {
-		$this->cpt_name = 'cabi-cpt-slug';
-        $this->cpt_slug = 'cabi-cpt-slug';
+        
+        $this->cpt_name = self::SLUG;
+        $this->cpt_slug = self::SLUG;
+
 		add_action('init', array($this, 'add_cpt'), 0);
         add_action('wp_enqueue_scripts', array($this, 'init'));
         add_shortcode('cabi_plugin', array($this, 'render'));
+
+        /* azioni ajax */
+        add_action('wp_ajax_nopriv_hello_world_ajax', array($this, 'hello_world_ajax'));
+        add_action('wp_ajax_hello_world_ajax', array($this, 'hello_world_ajax'));
+
+        /* attivazione e disattivazione plugin */
         register_activation_hook(__FILE__, array($this, 'activation'));
         register_deactivation_hook( __FILE__, array($this, 'deactivation'));   
     }
@@ -135,6 +145,10 @@ class CabiPlugin {
             $result = $wpdb->query($wpdb->prepare($query, $this->cpt_slug));   
             
         }
+    }
+
+    function hello_world_ajax() {
+        echo json_encode(array('Hello', 'world'));
     }
 
 }
