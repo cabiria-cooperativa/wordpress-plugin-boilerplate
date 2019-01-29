@@ -149,6 +149,7 @@ class CabiPlugin {
 
     function hello_world_ajax() {
         echo json_encode(array('Hello', 'world'));
+		wp_die(); /* previene che WordPress accodi '0' al risultato */
     }
 
 }
