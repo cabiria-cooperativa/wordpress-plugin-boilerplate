@@ -38,8 +38,8 @@ class CabiPlugin {
 	}
 
     function init() {
-        wp_enqueue_style( 'cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' , array(), '1');
-        wp_enqueue_script('cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/js/cabi-wordpress-plugin-boilerplate.js',array('jquery'),'1',true);
+        wp_enqueue_style( 'cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' , array(), mt_rand());
+        wp_enqueue_script('cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/js/cabi-wordpress-plugin-boilerplate.js', array('jquery'), mt_rand(), true);
         wp_localize_script('init', 'init_ajax', array('url' => admin_url( 'admin-ajax.php' )));
     }
 
