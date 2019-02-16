@@ -9,18 +9,22 @@
  * Text Domain: cabi
  */
 
+ // termino l'esecuzione se il plugin è richiamato direttamente
+ if (!defined('WPINC')) die;
+
 class CabiPlugin {
 
     const SLUG = 'cabi-custom-post';
-    
+
     function __construct() {
-        
+
         $this->cpt_name = self::SLUG;
         $this->cpt_slug = self::SLUG;
 
-		add_action('init', array($this, 'add_cpt'), 0);
-        add_action('wp_enqueue_scripts', array($this, 'init'));
-        add_shortcode('cabi_plugin', array($this, 'render'));
+		add_action('init', array($this, 'add_cpt'), 0);             /* aggiungo un custom post type         */
+        add_action('wp_enqueue_scripts', array($this, 'init'));     /* accodo js e css                      */
+        add_action('admin_menu', 'add_settings_page');              /* creo una pagina di impostazioni      */
+        add_shortcode('cabi_plugin', array($this, 'render'));       /* aggiungo uno shortcode               */
 
         /* azioni ajax */
         add_action('wp_ajax_nopriv_hello_world_ajax', array($this, 'hello_world_ajax'));
@@ -28,14 +32,17 @@ class CabiPlugin {
 
         /* attivazione e disattivazione plugin */
         register_activation_hook(__FILE__, array($this, 'activation'));
-        register_deactivation_hook( __FILE__, array($this, 'deactivation'));   
+        register_deactivation_hook( __FILE__, array($this, 'deactivation'));
     }
 
-    function activation(){}
+    function activation(){
+        $this->add_settings();
+    }
 
     function deactivation(){
 		$this->remove_cpt();
-	}
+        $this->remove_settings();
+	  }
 
     function init() {
         wp_enqueue_style( 'cabi_plugin', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' , array(), mt_rand());
@@ -56,7 +63,7 @@ class CabiPlugin {
         <?php
         return ob_get_clean();
     }
-	
+
 	function add_cpt() {
         $labels = array(
             'name'                  => _x( 'Post Types', 'Post Type General Name', 'cabi' ),
@@ -114,22 +121,22 @@ class CabiPlugin {
         );
         register_post_type( $this->cpt_name, $args );
     }
-    
+
     function remove_cpt() {
         global $wpdb;
         global $wp_post_types;
 
         $prefix = $wpdb->prefix;
         if (post_type_exists($this->cpt_name)) {
-            
+
             // deregistro il cpt
-            unset($wp_post_types[$this->cpt_name]); 
-            
+            unset($wp_post_types[$this->cpt_name]);
+
             // rimuovo la pagina di menu
             remove_menu_page($this->cpt_slug);
-            
+
             // recupero le revisioni del custom post
-            $rows = $wpdb->get_results ("SELECT ID FROM {$prefix}posts WHERE post_type = '{$this->cpt_slug}'");       
+            $rows = $wpdb->get_results ("SELECT ID FROM {$prefix}posts WHERE post_type = '{$this->cpt_slug}'");
             $ids = '';
             for ($i = 0; $i < count($rows); $i++) {
                 $ids .= $rows[$i]->ID . ',';
@@ -139,17 +146,54 @@ class CabiPlugin {
             //rimuovo le revisioni
             $query = "DELETE FROM {$prefix}posts WHERE post_type = 'revision' and post_parent IN ($ids)";
             $result = $wpdb->query($wpdb->prepare($query));
-            
+
             // rimuovo i custom post e i relativi meta
             $query = "DELETE a,b,c FROM {$prefix}posts a LEFT JOIN {$prefix}term_relationships b ON (a.ID = b.object_id) LEFT JOIN {$prefix}postmeta c ON (a.ID = c.post_id) WHERE a.post_type = %s";
-            $result = $wpdb->query($wpdb->prepare($query, $this->cpt_slug));   
-            
+            $result = $wpdb->query($wpdb->prepare($query, $this->cpt_slug));
+
         }
     }
 
     function hello_world_ajax() {
         echo json_encode(array('Hello', 'world'));
 		wp_die(); /* previene che WordPress accodi '0' al risultato */
+    }
+
+    function add_settings_page() {
+        add_options_page(
+            'My custom settings page',
+            'Custom settings page',
+            'manage_options',
+            'cabi-settings-page',
+            'render_settings_page'
+        );
+    }
+
+    function add_settings() {
+        //add_option('key', 'value');
+    }
+
+    function remove_settings() {
+        //delete_option('key');
+    }
+
+    function render_settings_page() {
+        if (!current_user_can('manage_options')) wp_die('Non possiedi i permessi per accedere a questa pagina');
+        ?>
+        <div class="wrap">
+            <h2>Setting title</h2>
+            <?php
+            if (isset($_POST['submit']) && wp_verify_nonce($_POST['modify_settings_nonce'], 'modify_settings')) {
+                /* opzione da salvare */
+                //update_option('key', 'value');
+            }
+            ?>
+            <form method="post">
+                <?php wp_nonce_field('modify_settings', 'modify_settings_nonce') ?>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        <?php
     }
 
 }
