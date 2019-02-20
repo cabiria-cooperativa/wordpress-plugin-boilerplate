@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
     
     jQuery.ajax({
         type: "POST",
-        url: "/wp-admin/admin-ajax.php",
+        url: init_ajax.url,
         data: { 
           action: 'hello_world_ajax'
         },
@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
     .done(function(response) {
         console.log(response);
     })
-      .fail(function(){
+    .fail(function(){
         console.log('failed');
     });
 });
