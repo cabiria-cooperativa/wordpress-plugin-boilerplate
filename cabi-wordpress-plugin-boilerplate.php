@@ -165,7 +165,7 @@ class CabiPlugin {
             'Custom settings page',
             'manage_options',
             'cabi-settings-page',
-            'render_settings_page'
+            array($this,'render_settings_page')
         );
     }
 
