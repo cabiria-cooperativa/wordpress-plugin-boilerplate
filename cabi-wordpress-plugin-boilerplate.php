@@ -21,10 +21,10 @@ class CabiPlugin {
         $this->cpt_name = self::SLUG;
         $this->cpt_slug = self::SLUG;
 
-		add_action('init', array($this, 'add_cpt'), 0);             /* aggiungo un custom post type         */
-        add_action('wp_enqueue_scripts', array($this, 'init'));     /* accodo js e css                      */
-        add_action('admin_menu', 'add_settings_page');              /* creo una pagina di impostazioni      */
-        add_shortcode('cabi_plugin', array($this, 'render'));       /* aggiungo uno shortcode               */
+		add_action('init', array($this, 'add_cpt'), 0);             	/* aggiungo un custom post type         */
+        add_action('wp_enqueue_scripts', array($this, 'init'));     	/* accodo js e css                      */
+        add_action('admin_menu', array($this, 'add_settings_page'));    /* creo una pagina di impostazioni      */
+        add_shortcode('cabi_plugin', array($this, 'render'));       	/* aggiungo uno shortcode               */
 
         /* azioni ajax */
         add_action('wp_ajax_nopriv_hello_world_ajax', array($this, 'hello_world_ajax'));
