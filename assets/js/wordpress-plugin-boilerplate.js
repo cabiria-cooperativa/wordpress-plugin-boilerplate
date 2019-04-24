@@ -1,7 +1,5 @@
 jQuery(document).ready(function($) {
     
-    console.log('Plugin boilerplate loaded...');
-    
     jQuery.ajax({
         type: "POST",
         url: init_ajax.url,
@@ -16,4 +14,5 @@ jQuery(document).ready(function($) {
     .fail(function(){
         console.log('failed');
     });
+
 });
