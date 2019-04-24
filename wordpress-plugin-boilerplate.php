@@ -219,7 +219,7 @@ class prefix_plugin {
     /**
      * Pagina di impostazione plugin
      */
-    private function render_settings_page() {
+    public function render_settings_page() {
         if (!current_user_can('manage_options')) wp_die('Non possiedi i permessi per accedere a questa pagina');
         ?>
         <div class="wrap">
