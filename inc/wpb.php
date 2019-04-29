@@ -7,32 +7,32 @@ abstract class wpbp {
     protected function __construct() {
 
         /* custom post */
-        // add_action('init', array(&$this, 'add_cpt'), 0);     
+        // add_action('init', array($this, 'add_cpt'), 0);     
 
         /* azioni */        	
-        add_action('wp_enqueue_scripts', array(&$this, 'scripts_and_styles'));
-        add_action('admin_menu', array(&$this, 'add_settings_page'));
-        add_action('wp_ajax_nopriv_hello_world_ajax', array(&$this, 'hello_world_ajax'));
-        add_action('wp_ajax_hello_world_ajax', array(&$this, 'hello_world_ajax'));
+        add_action('wp_enqueue_scripts', array($this, 'scripts_and_styles'));
+        add_action('admin_menu', array($this, 'add_settings_page'));
+        add_action('wp_ajax_nopriv_hello_world_ajax', array($this, 'hello_world_ajax'));
+        add_action('wp_ajax_hello_world_ajax', array($this, 'hello_world_ajax'));
 
         /* attivazione e disattivazione */
-        register_activation_hook(__FILE__, array(&$this, 'activation'));
-        register_deactivation_hook( __FILE__, array(&$this, 'deactivation'));
+        register_activation_hook(__FILE__, array($this, 'activation'));
+        register_deactivation_hook( __FILE__, array($this, 'deactivation'));
     }
 
     /**
      * Attivazione plugin
      */
     public function activation(){
-        self::add_settings();
+        $this->add_settings();
     }
 
     /**
      * Disattivazione plugin
      */
     public function deactivation(){
-		//self::remove_cpt();
-        self::remove_settings();
+		//$this->remove_cpt();
+        $this->remove_settings();
 	  }
 
     /**
@@ -157,7 +157,7 @@ abstract class wpbp {
             'Custom settings page',
             'manage_options',
             'wpbp',
-            array(&$this,'render_settings_page')
+            array($this,'render_settings_page')
         );
     }
 
