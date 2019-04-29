@@ -6,7 +6,7 @@ class wpbpdemo extends wpbp {
 
     public function __construct() {
         parent::__construct();
-        add_shortcode('wpdb_render', array(&$this, 'render'));
+        add_shortcode('wpdb_render', array($this, 'render'));
     }
 
     /**
