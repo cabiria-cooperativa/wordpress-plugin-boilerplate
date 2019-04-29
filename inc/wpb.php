@@ -39,8 +39,8 @@ abstract class wpbp {
      * Aggiunta CSS e javascript
      */
     public function scripts_and_styles() {
-        wp_enqueue_style( 'wpbp', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' , array(), mt_rand());
-        wp_enqueue_script('wpbp', plugin_dir_url( __FILE__ ) . 'assets/js/wordpress-plugin-boilerplate.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_style( 'wpbp', plugin_dir_url( __FILE__ ) . '../assets/css/style.css' , array(), mt_rand());
+        wp_enqueue_script('wpbp', plugin_dir_url( __FILE__ ) . '../assets/js/wordpress-plugin-boilerplate.js', array('jquery'), mt_rand(), true);
         wp_localize_script('init', 'init_ajax', array('url' => admin_url('admin-ajax.php')));
     }
 
