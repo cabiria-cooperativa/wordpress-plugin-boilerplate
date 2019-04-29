@@ -13,5 +13,3 @@ if (!defined('WPINC')) die;
 
 include_once __DIR__ . '/inc/wpb.php';
 include_once __DIR__ . '/inc/wpb-demo.php';
-
-new wpbpdemo();

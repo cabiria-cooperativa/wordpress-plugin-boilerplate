@@ -28,4 +28,6 @@ class wpbpdemo extends wpbp {
 
 }
 
+new wpbpdemo();
+
 
