@@ -1,10 +1,6 @@
 <?php
 
 class MySettings extends WpbSettings {
-
-    public function __construct() {
-        parent::__construct();
-    }
     
     /**
      * Salvataggio impostazioni
